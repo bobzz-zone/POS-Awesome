@@ -376,14 +376,12 @@ def get_item_detail(data, doc=None):
 
 
 def get_stock_availability(item_code, warehouse):
-    latest_sle = frappe.db.sql("""select sum(actual_qty) as  actual_qty
-		from `tabStock Ledger Entry` 
+    latest_sle = frappe.db.sql("""select actual_qty
+		from `tabBin` 
 		where item_code = %s and warehouse = %s
 		limit 1""", (item_code, warehouse), as_dict=1)
-
     sle_qty = latest_sle[0].actual_qty or 0 if latest_sle else 0
     return sle_qty
-
 
 @frappe.whitelist()
 def create_customer(customer_name, tax_id, mobile_no, email_id):
